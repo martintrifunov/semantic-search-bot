@@ -12,6 +12,16 @@ const ANSWERS_LIST = [
   "I have to buy some groceries",
   "I need to go shopping for food",
   "I need to get some food from the supermarket",
+  "Il pleut des cordes dehors.",
+  "Il pleut à verse dehors.",
+  "Le temps dehors est horrible, c'est une véritable averse.",
+  "La pluie tombe fortement dehors.",
+  "Dehors, c'est une pluie torrentielle.",
+  "J'ai besoin d'acheter des courses.",
+  "Je dois faire des courses.",
+  "Je dois acheter des provisions.",
+  "Je dois aller faire des courses alimentaires.",
+  "Je dois prendre de la nourriture au supermarché."
 ];
 
 const searchAction = async (req, res) => {
