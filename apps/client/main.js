@@ -2,7 +2,6 @@ const messageBar = document.querySelector(".bar-wrapper input");
 const sendBtn = document.querySelector(".bar-wrapper button");
 const messageBox = document.querySelector(".message-box");
 const API_URL = import.meta.env.VITE_API_URL;
-
 let loadInterval;
 
 const loader = (loaderElement) => {
@@ -16,6 +15,20 @@ const loader = (loaderElement) => {
 
     loaderElement.innerHTML = element;
   }, 300);
+};
+
+const typeText = (element, text) => {
+  element.innerHTML = "";
+  let index = 0;
+  let interval = setInterval(() => {
+    if (index < text.length) {
+      element.innerHTML += text.charAt(index);
+      index++;
+    } else {
+      clearInterval(interval);
+      element.innerHTML = text;
+    }
+  }, 5);
 };
 
 sendBtn.onclick = async (event) => {
@@ -44,14 +57,26 @@ sendBtn.onclick = async (event) => {
   const chatBotResponse = document.getElementById(loaderId);
   loader(chatBotResponse);
 
+  //Really hacky solution for applying html tags to typing effect -> refactor later
   try {
     const responseText = await getChatResponse(typedMessage);
+    clearInterval(loadInterval);
+    // Immediately insert the HTML content for display
     chatBotResponse.innerHTML = responseText;
+    // Get the plain text to type it
+    const plainText = chatBotResponse.innerText; // Get the plain text to type
+
+    typeText(chatBotResponse, plainText);
+
+    // After typing effect, apply the original HTML content
+    setTimeout(() => {
+      chatBotResponse.innerHTML = responseText;
+    }, plainText.length * 5.5); // Timing based on the typing speed
   } catch (error) {
-    chatBotResponse.innerHTML = "Oops! An error occurred. Please try again.";
+    clearInterval(loadInterval);
+    typeText(chatBotResponse, "Oops! An error occurred. Please try again.");
     console.error("Fetch error:", error);
   } finally {
-    clearInterval(loadInterval);
     sendBtn.disabled = false;
   }
 };
