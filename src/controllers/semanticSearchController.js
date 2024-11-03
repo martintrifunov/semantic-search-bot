@@ -14,7 +14,9 @@ const ANSWERS_LIST = [
   "I need to get some food from the supermarket",
 ];
 
-const searchAction = async (query, perPage) => {
+const searchAction = async (req, res) => {
+  const { query, perPage } = req.body;
+
   const searchTermEmbedding =
     await embeddingsController.generateEmbeddingCacheAction(query);
 
@@ -36,7 +38,7 @@ const searchAction = async (query, perPage) => {
 
   similarities.sort((a, b) => b.similarity - a.similarity);
 
-  return similarities.slice(0, perPage);
+  res.status(200).json(similarities.slice(0, perPage));
 };
 
 export const semanticSearchController = {

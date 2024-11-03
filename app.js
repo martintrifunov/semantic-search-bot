@@ -1,19 +1,12 @@
-import { embeddingsController } from "./src/controllers/embeddingsController.js";
+import express from "express";
 import { semanticSearchController } from "./src/controllers/semanticSearchController.js";
-import { embeddingMath } from "./src/helpers/math.js";
 
-// const text1 = "The boy playing in the street";
-// const text2 = "The kid having fun in the road";
+// app setup
+const app = express();
+app.listen(6969, () => console.log("Listening on port 6969"));
 
-// embeddingsController.generateEmbeddingCacheAction(text1).then((embedding1) => {
-//   //console.log(embedding)
-//   semanticSearch.generateEmbeddingCacheAction(text2).then((embedding2) => {
-//     //console.log(embedding2)
-//     console.log(embeddingMath.cosineSimilarity(embedding1, embedding2));
-//   });
-// });
+// middleware
+app.use(express.json());
 
-semanticSearchController
-  .searchAction("It's really rainy outside", 5)
-  .then((res) => console.log(res))
-  .catch((err) => console.error(err));
+// routes
+app.post("/api_v1/chat", semanticSearchController.searchAction);
