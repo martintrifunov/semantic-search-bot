@@ -3,6 +3,21 @@ const sendBtn = document.querySelector(".bar-wrapper button");
 const messageBox = document.querySelector(".message-box");
 const API_URL = import.meta.env.VITE_API_URL;
 
+let loadInterval;
+
+const loader = (loaderElement) => {
+  let element = "";
+  loadInterval = setInterval(() => {
+    element += ".";
+
+    if (element === "....") {
+      element = "";
+    }
+
+    loaderElement.innerHTML = element;
+  }, 300);
+};
+
 sendBtn.onclick = async (event) => {
   event.preventDefault();
 
@@ -16,15 +31,18 @@ sendBtn.onclick = async (event) => {
     <img src="/user.png" />
     <span>${typedMessage}</span>
   </div>`;
+
+  const loaderId = `loader-${Date.now()}`;
   const loaderResponse = `<div class="chat response">
     <img src="/chatbot.png" />
-    <span class="new">...</span>
+    <span id="${loaderId}" class="new">...</span>
   </div>`;
 
   messageBox.insertAdjacentHTML("beforeEnd", chatMessage);
   messageBox.insertAdjacentHTML("beforeEnd", loaderResponse);
 
-  const chatBotResponse = document.querySelector(".response .new");
+  const chatBotResponse = document.getElementById(loaderId);
+  loader(chatBotResponse);
 
   try {
     const responseText = await getChatResponse(typedMessage);
@@ -33,7 +51,7 @@ sendBtn.onclick = async (event) => {
     chatBotResponse.innerHTML = "Oops! An error occurred. Please try again.";
     console.error("Fetch error:", error);
   } finally {
-    chatBotResponse.classList.remove("new");
+    clearInterval(loadInterval);
     sendBtn.disabled = false;
   }
 };
