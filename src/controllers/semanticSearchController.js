@@ -1,30 +1,44 @@
-import { openAI } from "../config/openAIConfig.js";
-import { cache } from "../helpers/cache.js";
+import { embeddingMath } from "../helpers/math.js";
+import { embeddingsController } from "./embeddingsController.js";
 
-const generateEmbeddingCacheAction = async (text) => {
-  const cacheMap = cache.readCache();
+const ANSWERS_LIST = [
+  "It's raining cats and dogs outside",
+  "It's pouring rain outside",
+  "The weather outside is awful, it's a complete downpour",
+  "The rain is coming down heavily outside",
+  "Outside, it's a torrential downpour",
+  "I need to pick up some groceries",
+  "I need to do some grocery shopping",
+  "I have to buy some groceries",
+  "I need to go shopping for food",
+  "I need to get some food from the supermarket",
+];
 
-  if (cacheMap.has(text)) {
-    return cacheMap.get(text);
-  } else {
-    const embeddingVector = await generateEmbeddingAction(text);
+const searchAction = async (query, perPage) => {
+  const searchTermEmbedding =
+    await embeddingsController.generateEmbeddingCacheAction(query);
 
-    cache.appendToCache(text, embeddingVector);
+  let similarities = [];
 
-    return embeddingVector;
+  for (let i = 0; i < ANSWERS_LIST.length; i++) {
+    const answer = ANSWERS_LIST[i];
+
+    const answerEmbedding =
+      await embeddingsController.generateEmbeddingCacheAction(answer);
+
+    const similarity = embeddingMath.cosineSimilarity(
+      searchTermEmbedding,
+      answerEmbedding
+    );
+
+    similarities.push({ index: i, text: answer, similarity });
   }
+
+  similarities.sort((a, b) => b.similarity - a.similarity);
+
+  return similarities.slice(0, perPage);
 };
 
-const generateEmbeddingAction = async (text) => {
-  const response = await openAI.embeddings.create({
-    model: "text-embedding-ada-002",
-    input: text,
-  });
-
-  return response.data[0].embedding;
-};
-
-export const semanticSearch = {
-  generateEmbeddingAction,
-  generateEmbeddingCacheAction,
+export const semanticSearchController = {
+  searchAction,
 };
