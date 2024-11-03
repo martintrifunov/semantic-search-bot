@@ -10,7 +10,7 @@ const RAW_ANSWERS_FILE_PATH = path.join(
 );
 const SANITIZED_ANSWERS_FILE_PATH = path.join(
   __dirname,
-  "../../../../data/formattedAnswers.csv"
+  "../../../../data/sanitizedAnswers.csv"
 );
 
 const sanitizeAnswersFromCSV = (req, res) => {
@@ -25,8 +25,8 @@ const sanitizeAnswersFromCSV = (req, res) => {
       answersList.push(body);
     }
   });
-  const formattedAnswers = answersList.join("\n");
-  fs.writeFileSync(SANITIZED_ANSWERS_FILE_PATH, formattedAnswers, "utf8");
+  const sanitizedAnswers = answersList.join("\n");
+  fs.writeFileSync(SANITIZED_ANSWERS_FILE_PATH, sanitizedAnswers, "utf8");
 };
 
 const loadAnswersFromCSV = () => {
