@@ -1,0 +1,32 @@
+services:
+  client:
+    container_name: semantic_bot_client
+    stdin_open: true
+    tty: true
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./apps/client
+    volumes:
+      - /app/node_modules
+      - ./apps/client:/app
+    env_file:
+      - ./apps/client/.env
+    ports:
+      - 5173:5173
+    depends_on:
+      - api
+
+  api:
+    container_name: semantic_bot_api
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./apps/server
+    volumes:
+      - /app/node_modules
+      - ./apps/server:/app
+      - ./data:/data
+    env_file:
+      - ./apps/server/.env
+    restart: always
+    ports:
+      - 6969:6969
