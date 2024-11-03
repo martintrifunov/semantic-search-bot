@@ -6,6 +6,8 @@ const __dirname = path.dirname(__filename);
 
 const CACHE_FILE_PATH = path.join(__dirname, "../../embeddings/embeddings.csv");
 
+//TODO -> Replace with Vector db and elastic search
+
 const readCache = () => {
   try {
     if (!fs.existsSync(CACHE_FILE_PATH)) {

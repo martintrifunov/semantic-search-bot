@@ -21,7 +21,7 @@ const generateEmbeddingAction = async (text) => {
     input: text,
   });
 
-  return response.data.data[0].embedding;
+  return response.data[0].embedding;
 };
 
 export const semanticSearch = {
