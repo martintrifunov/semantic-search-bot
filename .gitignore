@@ -55,3 +55,6 @@ jest-coverage/
 # Miscellaneous
 *.bak
 *.old
+
+#Embeddings
+embeddings/*
