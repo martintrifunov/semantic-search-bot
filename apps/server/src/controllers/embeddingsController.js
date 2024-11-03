@@ -1,9 +1,11 @@
 import { openAI } from "../config/openAIConfig.js";
 import { cache } from "../helpers/cache.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const generateEmbeddingAction = async (text) => {
   const response = await openAI.embeddings.create({
-    model: "text-embedding-ada-002",
+    model: process.env.EMBEDDINGS_MODEL,
     input: text,
   });
 
