@@ -13,7 +13,7 @@ const SANITIZED_ANSWERS_FILE_PATH = path.join(
   "../../../../data/formattedAnswers.csv"
 );
 
-const sanitizeAnswersFromCSV = () => {
+const sanitizeAnswersFromCSV = (req, res) => {
   const answersFile = fs.readFileSync(RAW_ANSWERS_FILE_PATH, "utf8");
   const lines = answersFile.split("\n").slice(1);
   const answersList = [];

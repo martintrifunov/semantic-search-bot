@@ -28,7 +28,7 @@ const searchAction = async (req, res) => {
 
   similarities.sort((a, b) => b.similarity - a.similarity);
 
-  res.status(200).json(similarities.slice(0, perPage));
+  return res.status(200).json(similarities.slice(0, perPage));
 };
 
 export const semanticSearchController = {
