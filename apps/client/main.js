@@ -17,12 +17,13 @@ const loader = (loaderElement) => {
   }, 300);
 };
 
-const typeText = (element, text) => {
+const typeText = (element, text, messageBox) => {
   element.innerHTML = "";
   let index = 0;
   let interval = setInterval(() => {
     if (index < text.length) {
       element.innerHTML += text.charAt(index);
+      messageBox.scrollTop = messageBox.scrollHeight;
       index++;
     } else {
       clearInterval(interval);
@@ -56,6 +57,7 @@ sendBtn.onclick = async (event) => {
 
   const chatBotResponse = document.getElementById(loaderId);
   loader(chatBotResponse);
+  messageBox.scrollTop = messageBox.scrollHeight;
 
   //Really hacky solution for applying html tags to typing effect -> refactor later
   try {
@@ -66,11 +68,12 @@ sendBtn.onclick = async (event) => {
     // Get the plain text to type it
     const plainText = chatBotResponse.innerText; // Get the plain text to type
 
-    typeText(chatBotResponse, plainText);
+    typeText(chatBotResponse, plainText, messageBox);
 
     // After typing effect, apply the original HTML content
     setTimeout(() => {
       chatBotResponse.innerHTML = responseText;
+      messageBox.scrollTop = messageBox.scrollHeight;
     }, plainText.length * 5.5); // Timing based on the typing speed
   } catch (error) {
     clearInterval(loadInterval);
