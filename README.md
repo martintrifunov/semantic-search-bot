@@ -20,4 +20,4 @@ Clone the project. <br>
 
 Run the command:
 ```bash
-./init.sh [up|down]
+./init.sh dev [up|down]
