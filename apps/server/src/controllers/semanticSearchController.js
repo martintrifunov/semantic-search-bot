@@ -1,4 +1,5 @@
 import { answers } from "../helpers/answers.js";
+import { database } from "../helpers/database.js";
 import { embeddingMath } from "../helpers/math.js";
 import { embeddingsController } from "./embeddingsController.js";
 
@@ -31,6 +32,20 @@ const searchAction = async (req, res) => {
   return res.status(200).json(similarities.slice(0, perPage));
 };
 
+const searchMongoAction = async (req, res) => {
+  const { query } = req.body;
+
+  const searchTermEmbedding =
+    await embeddingsController.generateEmbeddingAction(query);
+
+  const answer = await database.findSimilarDocuments(searchTermEmbedding);
+
+  console.log(answer);
+
+  return res.status(200).json(answer);
+};
+
 export const semanticSearchController = {
   searchAction,
+  searchMongoAction,
 };

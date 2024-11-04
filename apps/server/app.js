@@ -19,5 +19,5 @@ app.use(express.json());
 db.run().catch(console.dir);
 
 // routes
-app.post("/api/v1/chat", semanticSearchController.searchAction);
+app.post("/api/v1/chat", semanticSearchController.searchMongoAction);
 app.get("/api/v1/sanitize-answers", answersController.sanitizeAction);

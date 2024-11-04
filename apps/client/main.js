@@ -95,8 +95,8 @@ const getChatResponse = async (query) => {
 
   const data = await response.json();
 
-  if (data[0].similarity >= 0.85) {
-    return data[0].text;
+  if (data[0]?.score >= 0.89) {
+    return data[0].answer_sanitized;
   } else {
     return "I'm sorry, but I cannot find the answer to your question.";
   }
